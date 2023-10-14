@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-    home page
+    لوجة التحكم - برنامج الفواتير
 @endsection
 @section('css')
     <!--  Owl-carousel css-->
