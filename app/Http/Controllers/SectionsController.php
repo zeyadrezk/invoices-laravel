@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSectionRequest;
 use App\Models\sections;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,21 +30,9 @@ class SectionsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSectionRequest $request)
     {
-	    $request->validate([
-		    'section_name' => 'required|unique:sections|min:4|max:25',
-		    'description' =>'required|min:10'
-	    ],[
-		    'section_name.required'=>'يرجي ادخال اسم القسم',
-		    'section_name.min'=>'اسم القسم يجب ان يكون 4 احرف علي الاقل',
-		    'section_name.max'=>'اسم القسم يجب ان يكون25 حرف علي الاكثر',
-		    'section_name.unique'=>'خطأ القسم مسجل مسبقا',
-		    'description.required' =>'يرجي ادخال الوصف',
-		    'description.min' =>'يجب ان يحتوي الوصف علي 10 حرف علي الاقل',
-	    
-	    ]);
-	    
+	   
 	    sections::create([
 		    'section_name' => $request->section_name,
 		    'description' => $request->description,
@@ -51,7 +40,7 @@ class SectionsController extends Controller
 	    
 	    ]);
 //	    session()->flash('Add', 'تم اضافة القسم بنجاح ');
-	    return redirect()->back()->with("Add",'تم اضافة القسم بنجاج');
+	    return redirect()->back()->with("success",'تم اضافة القسم بنجاج');
 	    
     }
 
@@ -74,16 +63,26 @@ class SectionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, sections $sections)
+    public function update(StoreSectionRequest $request)
     {
-        //
+		$section =  sections::findorfail($request->id);
+		$section->update( ['section_name' =>$request->section_name,
+	        'description'=> $request->description]
+    );
+	    
+	    return redirect()->back()->with("success",'تم تعديل القسم بنجاج');
+	    
+	    
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(sections $sections)
+    public function destroy(Request $request)
     {
-        //
+        		  sections::destroy($request->id);
+				  
+	    return redirect()->back()->with("success",'تم حذف القسم بنجاج');
+	    
     }
 }

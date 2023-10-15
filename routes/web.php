@@ -23,9 +23,6 @@ Route::get('/', function () {
 	Route::get('/home', function () {
 		return view('home');
 	})->middleware(['auth', 'verified'])->name('home');
-	Route::get('/index', function () {
-		return view('home');
-	})->middleware(['auth', 'verified'])->name('home');
 	
 	Route::get('/invoices', [InvoicesController::class,'index'])->name('invoices.index');
 	
@@ -39,6 +36,8 @@ Route::get('/', function () {
 	],function (){
 		Route::get('/', 'index')->name('index');
 		Route::post('/store', 'store')->name('store');
+		Route::patch('/update', 'update')->name('update');
+		Route::delete('/destroy', 'destroy')->name('destroy');
 		
 	});
 
