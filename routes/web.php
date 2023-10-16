@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\InvoicesController;
-use App\Http\Controllers\ProfileController;
+	use App\Http\Controllers\ProductsController;
+	use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 	use App\Http\Controllers\SectionsController;
 	use Illuminate\Support\Facades\Route;
@@ -40,8 +41,24 @@ Route::get('/', function () {
 		Route::delete('/destroy', 'destroy')->name('destroy');
 		
 	});
+	
+	Route::group([
+		'middleware' => ['auth'],
+		'controller'=>ProductsController::class,
+		'prefix'=>'products',
+		'as'=>'products.'
+	],function (){
+		Route::get('/', 'index')->name('index');
+		Route::post('/store', 'store')->name('store');
+		Route::patch('/update', 'update')->name('update');
+		Route::delete('/destroy', 'destroy')->name('destroy');
+		
+	});
 
 
+	
+	
+	
 
 
 

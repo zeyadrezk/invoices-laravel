@@ -1,4 +1,4 @@
-<?php
+	<?php
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -168,6 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+	    Barryvdh\Debugbar\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -182,6 +183,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+	    'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSectionRequest;
-use App\Http\Requests\UpdateSectionRequest;
+use App\Models\products;
 use App\Models\sections;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class SectionsController extends Controller
+class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+	    $products=products::all();
 	    $sections=sections::all();
-	    return view('sections.sections',compact('sections'));
+	    return view('products.products',compact('products','sections'));
+	    
 	    
     }
 
@@ -31,24 +31,24 @@ class SectionsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSectionRequest $request)
+    public function store(Request $request)
     {
-	   
-	    sections::create([
-		    'section_name' => $request->section_name,
+		
+	    products::create([
+		    'product_name' => $request->product_name,
 		    'description' => $request->description,
-		    'Created_by' => (Auth::user()-> name )
+		    'section_id'=>$request->section_id,
 	    
 	    ]);
 //	    session()->flash('Add', 'تم اضافة القسم بنجاح ');
-	    return redirect()->back()->with("success",'تم اضافة القسم بنجاج');
+	    return redirect()->back()->with("success",'تم اضافة المنتج بنجاج');
 	    
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(sections $sections)
+    public function show(products $products)
     {
         //
     }
@@ -56,7 +56,7 @@ class SectionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(sections $sections)
+    public function edit(products $products)
     {
         //
     }
@@ -64,26 +64,24 @@ class SectionsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSectionRequest $request)
+    public function update(Request $request, products $products)
     {
-		$section =  sections::findorfail($request->id);
-		$section->update( ['section_name' =>$request->section_name,
-	        'description'=> $request->description]
-    );
+	    $product =  products::findorfail($request->id);
+	    $product->update( ['product_name' =>$request->product_name,
+			    'description'=> $request->description,'section_id'=>$request->section_id]
+	    );
 	    
 	    return redirect()->back()->with("success",'تم تعديل القسم بنجاج');
-	    
 	    
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(products $products)
     {
-        		  sections::destroy($request->id);
-				  
-	    return redirect()->back()->with("success",'تم حذف القسم بنجاج');
+	    products::destroy($request->id);
 	    
+	    return redirect()->back()->with("success",'تم حذف المنتج بنجاج');
     }
 }
