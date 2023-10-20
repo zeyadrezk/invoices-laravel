@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvoicesController;
+	use App\Http\Controllers\InvoicesDetailsController;
 	use App\Http\Controllers\ProductsController;
 	use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
@@ -20,12 +21,14 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('auth.login');
-});
+})->middleware('guest');
+
 	Route::get('/home', function () {
 		return view('home');
-	})->middleware(['auth', 'verified'])->name('home');
+	})->middleware(['auth', 'verified'])
+		->name('home');
 	
-	Route::get('/invoices', [InvoicesController::class,'index'])->name('invoices.index');
+//	Route::get('/invoices', [InvoicesController::class,'index'])->name('invoices.index')->middleware('auth');
 	
 	
 	
@@ -54,6 +57,24 @@ Route::get('/', function () {
 		Route::delete('/destroy', 'destroy')->name('destroy');
 		
 	});
+Route::group([
+		'middleware' => ['auth'],
+		'controller'=>InvoicesController::class,
+		'prefix'=>'invoices',
+		'as'=>'invoices.'
+	],function (){
+		Route::get('/', 'index')->name('index');
+		Route::get('/create', 'create')->name('create');
+		Route::post('/store', 'store')->name('store');
+		Route::patch('/update', 'update')->name('update');
+		Route::delete('/destroy', 'destroy')->name('destroy');
+		Route::get('/section/{id}', 'getproducts')->name('get-products');
+		
+	});
+	
+	Route::get('invoices/details/{id}', [InvoicesDetailsController::class,'edit'])
+		->name('invoices.details')
+		->middleware('auth');
 
 
 	

@@ -5,30 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class invoices extends Model
+class invoices_details extends Model
 {
-    use HasFactory;
-	
 	protected $fillable = [
+		'id_Invoice',
 		'invoice_number',
-		'invoice_Date',
-		'Due_date',
 		'product',
 		'section_id',
-		'Amount_collection',
-		'Amount_Commission',
-		'Discount',
-		'Value_VAT',
-		'Rate_VAT',
-		'Total',
 		'Status',
 		'Value_Status',
 		'note',
+		'user',
 		'Payment_Date',
 	];
 	
-	public function section()
-	{
-		return $this->belongsTo(sections::class);
-	}
+    use HasFactory;
 }

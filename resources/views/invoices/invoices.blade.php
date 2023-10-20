@@ -31,11 +31,9 @@
 						<div class="col-xl-12">
 							<div class="card">
 								<div class="card-header pb-0">
-									<div class="d-flex justify-content-between">
-										<h4 class="card-title mg-b-0">SIMPLE TABLE</h4>
-										<i class="mdi mdi-dots-horizontal text-gray"></i>
-									</div>
-									<p class="tx-12 tx-gray-500 mb-2">Example of Valex Simple Table. <a href="">Learn more</a></p>
+										<a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
+													class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
+
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
@@ -57,21 +55,33 @@
 											</tr>
 											</thead>
 											<tbody>
+											<?php $i=1; ?>
+											@foreach($invoices as $invoice)
 											<tr>
-												<td>1</td>
-												<td>2161</td>
-												<td>2020-09-13</td>
-												<td>2021/03/20</td>
-												<td>cc</td>
-												<td>البنك الاهلي</td>
-												<td>2500</td>
-												<td>1000</td>
-												<td>10%</td>
-												<td>2590</td>
-												<td>غير مدفوعة</td>
-												<td>لم يتم السداد</td>
+												<td>{{$i++}}</td>
+												<td>{{$invoice->invoice_number}}</td>
+												<td>{{$invoice->invoice_Date}}</td>
+												<td>{{$invoice->Due_date}}</td>
+												<td>{{$invoice->product}}</td>
+												<td>
+													<a href="{{ url('invoices/details') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
+												</td>
+												<td>{{$invoice->Discount}}</td>
+												<td>{{$invoice->Rate_VAT}}</td>
+												<td>{{$invoice->Value_VAT}}</td>
+												<td>{{$invoice->Total}}</td>
+												<td>
+													@if ($invoice->Value_Status == 1)
+														<span class="text-success">{{ $invoice->Status }}</span>
+													@elseif($invoice->Value_Status == 2)
+														<span class="text-danger">{{ $invoice->Status }}</span>
+													@else
+														<span class="text-primary">{{ $invoice->Status }}</span>
+													@endif
+												</td>
+												<td>{{$invoice->note}}</td>
 											</tr>
-
+											@endforeach
 											</tbody>
 										</table>
 									</div>
