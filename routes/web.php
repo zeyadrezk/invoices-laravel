@@ -71,10 +71,19 @@ Route::group([
 		Route::get('/section/{id}', 'getproducts')->name('get-products');
 		
 	});
+Route::group([
+		'middleware' => ['auth'],
+		'controller'=>InvoicesDetailsController::class,
+		'prefix'=>'invoices',
+		'as'=>'invoices.'
+	],function (){
+		Route::get('/details/{id}', 'edit')->name('details');
+		Route::get('/View_file/{invoice_number}/{file_name}', 'open_file')->name('open.file');
+		Route::get('/download/{invoice_number}/{file_name}', 'get_file')->name('get.file');
+		Route::delete('/delete', 'destroy')->name('file.destroy');
+		
+	});
 	
-	Route::get('invoices/details/{id}', [InvoicesDetailsController::class,'edit'])
-		->name('invoices.details')
-		->middleware('auth');
 
 
 	

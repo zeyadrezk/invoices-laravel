@@ -37,20 +37,13 @@
     @endif
 
 
-    @if (session()->has('Add'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>{{ session()->get('Add') }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
 
 
 
-    @if (session()->has('delete'))
+
+    @if (session()->has('success'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>{{ session()->get('delete') }}</strong>
+            <strong>{{ session()->get('success') }}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -73,8 +66,7 @@
                                     <div class="tabs-menu1">
                                         <!-- Tabs -->
                                         <ul class="nav panel-tabs main-nav-line">
-                                            <li><a href="#tab4" class="nav-link active" data-toggle="tab">معلومات
-                                                    الفاتورة</a></li>
+                                            <li><a href="#tab4" class="nav-link active" data-toggle="tab">معلومات الفاتورة</a></li>
                                             <li><a href="#tab5" class="nav-link" data-toggle="tab">حالات الدفع</a></li>
                                             <li><a href="#tab6" class="nav-link" data-toggle="tab">المرفقات</a></li>
                                         </ul>
@@ -249,12 +241,12 @@
                                                                 <td colspan="2">
 
                                                                     <a class="btn btn-outline-success btn-sm"
-                                                                       href="{{ url('View_file') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
+                                                                       href="{{ url('invoices/View_file') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
                                                                        role="button"><i class="fas fa-eye"></i>&nbsp;
                                                                         عرض</a>
 
                                                                     <a class="btn btn-outline-info btn-sm"
-                                                                       href="{{ url('download') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
+                                                                       href="{{ url('invoices/download') }}/{{ $invoices->invoice_number }}/{{ $attachment->file_name }}"
                                                                        role="button"><i
                                                                                 class="fas fa-download"></i>&nbsp;
                                                                         تحميل</a>
@@ -293,38 +285,38 @@
     <!-- /row -->
 
     <!-- delete -->
-{{--    <div class="modal fade" id="delete_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"--}}
-{{--         aria-hidden="true">--}}
-{{--        <div class="modal-dialog" role="document">--}}
-{{--            <div class="modal-content">--}}
-{{--                <div class="modal-header">--}}
-{{--                    <h5 class="modal-title" id="exampleModalLabel">حذف المرفق</h5>--}}
-{{--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                        <span aria-hidden="true">&times;</span>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--                <form action="{{ route('delete_file') }}" method="post">--}}
+    <div class="modal fade" id="delete_file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">حذف المرفق</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ route('invoices.file.destroy') }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <div class="modal-body">
+                        <p class="text-center">
+                        <h6 style="color:red"> هل انت متاكد من عملية حذف المرفق ؟</h6>
+                        </p>
 
-{{--                    {{ csrf_field() }}--}}
-{{--                    <div class="modal-body">--}}
-{{--                        <p class="text-center">--}}
-{{--                        <h6 style="color:red"> هل انت متاكد من عملية حذف المرفق ؟</h6>--}}
-{{--                        </p>--}}
+                        <input type="hidden" name="id_file" id="id_file" value="">
+                        <input type="hidden" name="file_name" id="file_name" value="">
+                        <input type="hidden" name="invoice_number" id="invoice_number" value="">
 
-{{--                        <input type="hidden" name="id_file" id="id_file" value="">--}}
-{{--                        <input type="hidden" name="file_name" id="file_name" value="">--}}
-{{--                        <input type="hidden" name="invoice_number" id="invoice_number" value="">--}}
-
-{{--                    </div>--}}
-{{--                    <div class="modal-footer">--}}
-{{--                        <button type="button" class="btn btn-default" data-dismiss="modal">الغاء</button>--}}
-{{--                        <button type="submit" class="btn btn-danger">تاكيد</button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    </div>--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">الغاء</button>
+                        <button type="submit" class="btn btn-danger">تاكيد</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
     <!-- Container closed -->
     </div>
     <!-- main-content closed -->
