@@ -31,7 +31,7 @@ Route::get('/', function () {
 //	Route::get('/invoices', [InvoicesController::class,'index'])->name('invoices.index')->middleware('auth');
 	
 	
-	
+	//section routes
 	Route::group([
 		'middleware' => ['auth'],
 		'controller'=>SectionsController::class,
@@ -45,6 +45,7 @@ Route::get('/', function () {
 		
 	});
 	
+	//products routes
 	Route::group([
 		'middleware' => ['auth'],
 		'controller'=>ProductsController::class,
@@ -57,6 +58,9 @@ Route::get('/', function () {
 		Route::delete('/destroy', 'destroy')->name('destroy');
 		
 	});
+	
+	
+	//invoices routes
 Route::group([
 		'middleware' => ['auth'],
 		'controller'=>InvoicesController::class,
@@ -67,10 +71,14 @@ Route::group([
 		Route::get('/create', 'create')->name('create');
 		Route::post('/store', 'store')->name('store');
 		Route::patch('/update', 'update')->name('update');
+		Route::get('/edit/{id}', 'edit')->name('edit');
 		Route::delete('/destroy', 'destroy')->name('destroy');
 		Route::get('/section/{id}', 'getproducts')->name('get-products');
 		
 	});
+
+
+		//details of invoices routes
 Route::group([
 		'middleware' => ['auth'],
 		'controller'=>InvoicesDetailsController::class,
@@ -81,6 +89,7 @@ Route::group([
 		Route::get('/View_file/{invoice_number}/{file_name}', 'open_file')->name('open.file');
 		Route::get('/download/{invoice_number}/{file_name}', 'get_file')->name('get.file');
 		Route::delete('/delete', 'destroy')->name('file.destroy');
+		Route::post('/Attachments', 'store_attachment')->name('store.attachments');
 		
 	});
 	

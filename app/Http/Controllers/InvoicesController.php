@@ -114,17 +114,38 @@ class InvoicesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(invoices $invoices)
+    public function edit($id)
     {
-        //
-    }
+        $invoice = invoices::findorfail($id);
+		$sections = sections::all();
+		return view('invoices.edit_invoice', compact('invoice', 'sections'));
+	
+	}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, invoices $invoices)
+    public function update(Request $request)
     {
-        //
+        $invoice = invoices::findorfail($request->invoice_id);
+		$invoice->update([
+			'invoice_number' => $request->invoice_number,
+			'invoice_Date' => $request->invoice_Date,
+			'Due_date' => $request->Due_date,
+			'product' => $request->product,
+			'section_id' => $request->section_id,
+			'Amount_collection' => $request->Amount_collection,
+			'Amount_Commission' => $request->Amount_Commission,
+			'Discount' => $request->Discount,
+			'Value_VAT' => $request->Value_VAT,
+			'Rate_VAT' => $request->Rate_VAT,
+			'Total' => $request->Total,
+			'note' => $request->note,
+		]);
+		
+		
+	 
+		return back()->with('success',"تم تعديل الفاتورة بنجاح");
     }
 
     /**

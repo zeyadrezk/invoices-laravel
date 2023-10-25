@@ -6,6 +6,7 @@ use App\Models\invoice_attachments;
 use App\Models\invoices;
 use App\Models\invoices_details;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -72,7 +73,7 @@ class InvoicesDetailsController extends Controller
 	        $path= ('Attachments/'.$request->invoice_number.'/'.$request->file_name);
 			File::delete($path);
 	    
-	    return back()->with('success','تم حذف المرفق بنجاح ');
+	    return back()->with('deleted','تم حذف المرفق بنجاح ');
 		
     }
 		
@@ -90,6 +91,41 @@ class InvoicesDetailsController extends Controller
 	{
 		$files = public_path('Attachments/'.$invoice_number.'/'.$file_name);
 		return response()->file($files);
+	}
+	
+	public function store_attachment(Request $request)
+	
+	{
+			$request->validate([
+				'file_name' => 'required|image|mimes:pdf,jpg,png|max:2048', // Example validation rules
+			],[
+				'file_name.mimes'=>' تم حفظ الفاتورة ولكن الصورة غير متوافقة '
+			]);
+			$image = $request->file('file_name');
+			$file_name = $image->getClientOriginalName();
+			
+			invoice_attachments::create([
+				'file_name' => $request->file_name,
+				'invoice_number' => $request->invoice_number,
+				'Created_by' => Auth::user()->name,
+				'invoice_id' => $request->invoice_id,
+
+			]);
+//			$attachments = new invoice_attachments();
+//			$attachments->file_name = $file_name;
+//			$attachments->invoice_number = $request->invoice_number;
+//			$attachments->Created_by = Auth::user()->name;
+//			$attachments->invoice_id = $request->invoice_id;
+//			$attachments->save();
+			
+			// move pic
+			$imageName = $request->file_name->getClientOriginalName();
+			$request->file_name->move(public_path('Attachments/' . $request->invoice_number), $imageName);
+		
+		
+		
+		
+		return back()->With('success','تم اضافة المرفق بنجاح');
 	}
 	
 	

@@ -42,8 +42,16 @@
 
 
     @if (session()->has('success'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>{{ session()->get('success') }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+  @if (session()->has('deleted'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{ session()->get('deleted') }}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -193,13 +201,13 @@
                                         <div class="tab-pane" id="tab6">
                                             <!--المرفقات-->
                                             <div class="card card-statistics">
-                                                    @can('اضافة مرفق')
+
                                                         <div class="card-body">
                                                             <p class="text-danger">* صيغة المرفق pdf, jpeg ,.jpg , png </p>
                                                             <h5 class="card-title">اضافة مرفقات</h5>
-                                                            <form method="post" action="{{ url('/InvoiceAttachments') }}"
+                                                            <form method="post" action="{{ url('/invoices/Attachments') }}"
                                                                   enctype="multipart/form-data">
-                                                                {{ csrf_field() }}
+                                                                @csrf
                                                                 <div class="custom-file">
                                                                     <input type="file" class="custom-file-input" id="customFile"
                                                                            name="file_name" required>
@@ -214,7 +222,7 @@
                                                                         name="uploadedFile">تاكيد</button>
                                                             </form>
                                                         </div>
-                                                    @endcan
+
                                                     <br>
 
                                                 <div class="table-responsive mt-15">
