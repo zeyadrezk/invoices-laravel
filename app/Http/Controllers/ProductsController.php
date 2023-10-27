@@ -13,7 +13,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-	    $products=products::all();
+	    $products=products::with('section')->get();
 	    $sections=sections::all();
 	    return view('products.products',compact('products','sections'));
 	    

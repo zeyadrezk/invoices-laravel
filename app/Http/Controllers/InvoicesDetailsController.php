@@ -104,19 +104,19 @@ class InvoicesDetailsController extends Controller
 			$image = $request->file('file_name');
 			$file_name = $image->getClientOriginalName();
 			
-			invoice_attachments::create([
-				'file_name' => $request->file_name,
-				'invoice_number' => $request->invoice_number,
-				'Created_by' => Auth::user()->name,
-				'invoice_id' => $request->invoice_id,
-
-			]);
-//			$attachments = new invoice_attachments();
-//			$attachments->file_name = $file_name;
-//			$attachments->invoice_number = $request->invoice_number;
-//			$attachments->Created_by = Auth::user()->name;
-//			$attachments->invoice_id = $request->invoice_id;
-//			$attachments->save();
+//			invoice_attachments::create([
+//				'file_name' => $file_name,
+//				'invoice_number' => $request->invoice_number,
+//				'Created_by' => Auth::user()->name,
+//				'invoice_id' => $request->invoice_id,
+//
+//			]);
+			$attachments = new invoice_attachments();
+			$attachments->file_name = $file_name;
+			$attachments->invoice_number = $request->invoice_number;
+			$attachments->Created_by = Auth::user()->name;
+			$attachments->invoice_id = $request->invoice_id;
+			$attachments->save();
 			
 			// move pic
 			$imageName = $request->file_name->getClientOriginalName();
