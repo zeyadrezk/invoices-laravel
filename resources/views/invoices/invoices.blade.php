@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-	invoices
+	الفواتير
 @endsection
 @section('css')
 	<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
@@ -40,7 +40,17 @@
 
 		</script>
 	@endif
+	@if (session()->has('payment'))
+		<script>
+			window.onload = function() {
+				notif({
+					msg: "تم تعديل الدفع بنجاح",
+					type: "success"
+				})
+			}
 
+		</script>
+	@endif
 	<!-- row -->
 					<div class="row row-sm">
 						<div class="col-xl-12">
@@ -92,7 +102,7 @@
 													@elseif($invoice->Value_Status == 2)
 														<span class="text-danger">{{ $invoice->Status }}</span>
 													@else
-														<span class="text-primary">{{ $invoice->Status }}</span>
+														<span class="text-orange">{{ $invoice->Status }}</span>
 													@endif
 												</td>
 												<td>{{$invoice->note}}</td>
@@ -101,13 +111,16 @@
 														<button aria-expanded="false" aria-haspopup="true" class="btn ripple btn-primary"
 																data-toggle="dropdown" type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
 														<div class="dropdown-menu tx-13">
-															<a class="dropdown-item" href="{{url('invoices/edit')}}/{{$invoice->id}}"> <i class="text-success far	 fa-edit"></i>  تعديل الفاتورة</a>
+															<a class="dropdown-item" href="{{url('invoices/edit')}}/{{$invoice->id}}"> <i class="text-success far fa-edit"></i>  تعديل الفاتورة</a>
+
+															<a class="dropdown-item" href="{{route('invoices.status.show',[$invoice->id])}}">
+																<i class="text-success fa fa-credit-card"></i>&nbsp;&nbsp;تغيير حالة الدفع </a>
 
 															<a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}" data-toggle="modal" data-target="#delete_invoice">
 																<i class="text-danger fas fa-trash-alt"></i>&nbsp;&nbsp;حذف الفاتورة</a>
+
 														</div>
 													</div>
-
 
 												</td>
 											</tr>

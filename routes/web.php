@@ -72,8 +72,10 @@ Route::group([
 		Route::post('/store', 'store')->name('store');
 		Route::patch('/update', 'update')->name('update');
 		Route::get('/edit/{id}', 'edit')->name('edit');
-		Route::delete('/destroy', 'destroy')->name('destroy');
+		Route::get('/status_show/{id}', 'show')->name('status.show');
+		Route::post('/status_update', 'status_update')->name('status.update');
 		Route::get('/section/{id}', 'getproducts')->name('get-products');
+		Route::delete('/destroy', 'destroy')->name('destroy');
 		
 	});
 

@@ -108,9 +108,11 @@ class InvoicesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(invoices $invoices)
+    public function show($id)
     {
-        //
+//     $invoice = invoices::where('id', $id)->first();
+     $invoice = invoices::with('section')->where('id', $id)->first();
+	 return view('invoices.status_update',compact('invoice'));
     }
 
     /**
@@ -173,5 +175,103 @@ class InvoicesController extends Controller
 		$products = DB::table("products")->where("section_id", $id)->pluck("Product_name", "id");
 		return json_encode($products);
 	}
+	
+	public function status_update(Request $request)
+	{
+		$invoice = invoices::findorfail($request->invoice_id);
+		switch ($request->status)
+		{
+			case ('مدفوعة'):
+				$invoice->update([
+				'Value_Status'=>1,
+				'Status'=>$request->status,
+				'Payment_Date'=>$request->payment_date
+			]);
+			
+			invoices_Details::create([
+				'id_Invoice' => $request->invoice_id,
+				'invoice_number' => $request->invoice_number,
+				'product' => $request->product,
+				'section_id' => $request->section_id,
+				'Status' => $request->status,
+				'Value_Status' => 1,
+				'note' => $request->note,
+				'Payment_Date' => $request->payment_date,
+				'user' => (Auth::user()->name),
+			]);
+			
+			break;
+			
+			case ("مدفوعة جزئيا"):
+				
+				$invoice->update([
+					'Value_Status' => 3,
+					'Status' => $request->status,
+					'Payment_Date' => $request->payment_date,
+				]);
+				invoices_Details::create([
+					'id_Invoice' => $request->invoice_id,
+					'invoice_number' => $request->invoice_number,
+					'product' => $request->product,
+					'section_id' => $request->section_id,
+					'Status' => $request->status,
+					'Value_Status' => 3,
+					'note' => $request->note,
+					'Payment_Date' => $request->payment_date,
+					'user' => (Auth::user()->name),
+				]);
+				break;
+				
+			default:
+				return back()->with('error',"");
+			
+			
+		}
+//		if ($request->status=="مدفوعة")
+//		{
+//			$invoice->update([
+//				'Value_Status'=>1,
+//				'Status'=>$request->status,
+//				'Payment_Date'=>$request->payment_date
+//			]);
+//
+//			invoices_Details::create([
+//			'id_Invoice' => $request->invoice_id,
+//			'invoice_number' => $request->invoice_number,
+//			'product' => $request->product,
+//			'section_id' => $request->section_id,
+//			'Status' => $request->status,
+//			'Value_Status' => 1,
+//			'note' => $request->note,
+//			'Payment_Date' => $request->payment_date,
+//			'user' => (Auth::user()->name),
+//		]);
+//		}
+//		if ($request->status=="مدفوعة جزئيا")
+//		{
+//			$invoice->update([
+//				'Value_Status' => 3,
+//				'Status' => $request->status,
+//				'Payment_Date' => $request->payment_date,
+//			]);
+//			invoices_Details::create([
+//				'id_Invoice' => $request->invoice_id,
+//				'invoice_number' => $request->invoice_number,
+//				'product' => $request->product,
+//				'section_id' => $request->section_id,
+//				'Status' => $request->status,
+//				'Value_Status' => 3,
+//				'note' => $request->note,
+//				'Payment_Date' => $request->payment_date,
+//				'user' => (Auth::user()->name),
+//			]);
+//		}
+
+		 return redirect(route('invoices.index'))
+			 ->with('payment',"");
+		
+	
+	}
+	
 	
 }
