@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-	الفواتير
+	  الفواتير الغير مدفوعة
 @endsection
 @section('css')
 	<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
@@ -18,7 +18,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ قائمة الفواتير</span>
+							<h4 class="content-title mb-0 my-auto"> الفواتير </h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ الفواتير الغير مدفوعة</span>
 						</div>
 					</div>
 
@@ -29,34 +29,24 @@
 @endsection
 @section('content')
 
-	@if (session()->has('delete_invoice'))
-		<script>
-			window.onload = function() {
-				notif({
-					msg: "تم حذف الفاتورة بنجاح",
-					type: "success"
-				})
-			}
-
-		</script>
-	@endif
-	@if (session()->has('restored_invoice'))
-		<script>
-			window.onload = function() {
-				notif({
-					msg: "تم استعادة الفاتورة بنجاح",
-					type: "success"
-				})
-			}
-
-		</script>
-	@endif
-
 	@if (session()->has('archive_invoice'))
 		<script>
 			window.onload = function() {
 				notif({
 					msg: "تم ارشفة الفاتورة بنجاح",
+					type: "success"
+				})
+			}
+
+		</script>
+	@endif
+
+
+	@if (session()->has('delete_invoice'))
+		<script>
+			window.onload = function() {
+				notif({
+					msg: "تم حذف الفاتورة بنجاح",
 					type: "success"
 				})
 			}
@@ -78,11 +68,7 @@
 					<div class="row row-sm">
 						<div class="col-xl-12">
 							<div class="card">
-								<div class="card-header pb-0">
-										<a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
-													class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
 
-								</div>
 								<div class="card-body">
 									<div class="table-responsive">
 										<table class="table text-md-nowrap" id="example1">
@@ -134,9 +120,7 @@
 														<button aria-expanded="false" aria-haspopup="true" class="btn ripple btn-primary"
 																data-toggle="dropdown" type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
 														<div class="dropdown-menu tx-13">
-
-															<a class="dropdown-item" href="{{url('invoices/edit')}}/{{$invoice->id}}">
-																<i class="text-success far fa-edit"></i>  تعديل الفاتورة</a>
+															<a class="dropdown-item" href="{{url('invoices/edit')}}/{{$invoice->id}}"> <i class="text-success far fa-edit"></i>  تعديل الفاتورة</a>
 
 															<a class="dropdown-item" href="{{route('invoices.status.show',[$invoice->id])}}">
 																<i class="text-success fa fa-credit-card"></i>&nbsp;&nbsp;تغيير حالة الدفع </a>
@@ -146,10 +130,6 @@
 
 															<a class="dropdown-item" href="#" data-invoice_id="{{ $invoice->id }}" data-toggle="modal" data-target="#archive_invoice">
 																<i class="text-orange fas fa-archive"></i>&nbsp;&nbsp;ارشفة الفاتورة</a>
-
-
-															<a class="dropdown-item" href="{{url('invoices/print')}}/{{$invoice->id}}"  >
-																<i class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة الفاتورة</a>
 
 
 														</div>
@@ -193,33 +173,32 @@
 						</div>
 					</div>
 				</div>
-
-			{{--	{--	ارشفة الفاتورة--}}
-				<div class="modal fade" id="archive_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-					 aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">ارشفة الفاتورة</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<form action="{{ route('invoices.archive') }}" method="post">
-								@method('delete')
-								@csrf
+				{{--	ارشفة الفاتورة--}}
+					<div class="modal fade" id="archive_invoice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+						 aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">ارشفة الفاتورة</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+									<form action="{{ route('invoices.archive') }}" method="post">
+									@method('delete')
+									@csrf
+								</div>
+								<div class="modal-body">
+									هل انت متاكد من عملية الارشفة ؟
+									<input type="hidden" name="invoice_id" id="invoice_id" value="">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
+									<button type="submit" class="btn btn-success">تاكيد</button>
+								</div>
+								</form>
 							</div>
-							<div class="modal-body">
-								هل انت متاكد من عملية الارشفة ؟
-								<input type="hidden" name="invoice_id" id="invoice_id" value="">
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
-								<button type="submit" class="btn btn-success">تاكيد</button>
-							</div>
-							</form>
 						</div>
 					</div>
-				</div>
 
 				</div>
 				<!-- row closed -->
@@ -271,5 +250,6 @@
 		})
 
 	</script>
+
 
 @endsection

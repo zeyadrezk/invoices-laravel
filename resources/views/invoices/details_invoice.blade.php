@@ -97,7 +97,7 @@
                                                         <th scope="row">تاريخ الاستحقاق</th>
                                                         <td>{{ $invoices->Due_date }}</td>
                                                         <th scope="row">القسم</th>
-                                                        <td>{{ $invoices->Section->section_name }}</td>
+                                                        <td>{{ $invoices->section->section_name }}</td>
                                                     </tr>
 
                                                     <tr>
@@ -170,7 +170,7 @@
                                                             <td>{{ $counter++ }}</td>
                                                             <td>{{ $detail->invoice_number }}</td>
                                                             <td>{{ $detail->product }}</td>
-                                                            <td>{{ $invoices->Section->section_name }}</td>
+                                                            <td>{{ $invoices->section->section_name }}</td>
                                                             @if ($detail->Value_Status == 1)
                                                                 <td><span
                                                                             class="badge badge-pill badge-success">{{ $detail->Status }}</span>

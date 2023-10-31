@@ -72,12 +72,26 @@ Route::group([
 		Route::post('/store', 'store')->name('store');
 		Route::patch('/update', 'update')->name('update');
 		Route::get('/edit/{id}', 'edit')->name('edit');
+		Route::get('/section/{id}', 'getproducts')->name('get-products');
+		Route::post('/restore', 'invoice_restore')->name('restore');
+		
+		Route::get('/print/{id}', 'print_invoice')->name('print.invoice');
+		
+		//status
 		Route::get('/status_show/{id}', 'show')->name('status.show');
 		Route::post('/status_update', 'status_update')->name('status.update');
-		Route::get('/section/{id}', 'getproducts')->name('get-products');
-		Route::delete('/destroy', 'destroy')->name('destroy');
 		
-	});
+		//show types of invoices
+		Route::get('/paid', 'invoice_paid')->name('paid');
+		Route::get('/unpaid', 'invoice_unpaid')->name('unpaid');
+		Route::get('/partial', 'invoice_partial')->name('partial');
+		Route::get('/archived_invoices', 'archived_invoices')->name('archived_invoices');
+		
+		//delete and archive
+		Route::delete('/destroy', 'destroy')->name('destroy');
+		Route::delete('/archive', 'invoice_archive')->name('archive');
+	
+});
 
 
 		//details of invoices routes

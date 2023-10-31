@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use function PHPUnit\Framework\isEmpty;
 
 class InvoicesController extends Controller
 {
@@ -159,7 +160,13 @@ class InvoicesController extends Controller
     {
         $id = $request->invoice_id;
 		$invoice = invoices::where('id',$id)->first();
-		$attachments = invoice_attachments::where('invoice_id',$id)->get();
+		
+	    if(!$invoice){
+			$invoice = invoices::onlyTrashed()->where('id',$id)->first();
+		}
+			
+	    $attachments = invoice_attachments::where('invoice_id',$id)->get();
+		
 		foreach($attachments as $attachment) {
 			if (!empty($attachment->invoice_number)) {
 //				Storage::disk('public')->delete('/Attachments/'.$attachment->invoice_number.'/'.$attachment->file_name);
@@ -167,7 +174,7 @@ class InvoicesController extends Controller
 			}
 		$attachment->delete();
 		}
-		$invoice ->delete();
+		$invoice ->forceDelete();
 		return back()->with('delete_invoice','');
     }
 	public function getproducts($id)
@@ -269,9 +276,51 @@ class InvoicesController extends Controller
 
 		 return redirect(route('invoices.index'))
 			 ->with('payment',"");
-		
+	}
 	
+	public function invoice_paid()
+	{
+		$invoices = invoices::with('section')->where('Value_status',1)->get();
+		return view('invoices.invoices_paid',compact('invoices'));
+		
+	}
+	
+	public function invoice_unpaid()
+	{
+		$invoices = invoices::with('section')->where('Value_status',2)->get();
+		return view('invoices.invoices_unpaid',compact('invoices'));
+	}
+	
+	public function invoice_partial()
+	{
+		$invoices = invoices::with('section')->where('Value_status',3)->get();
+		return view('invoices.invoices_partial',compact('invoices'));
+		
+	}	public function archived_invoices()
+	{
+		$invoices = invoices::with('section')->onlyTrashed()->get();
+		return view('invoices.archived_invoices',compact('invoices'));
+		
+	}
+	public function invoice_archive(Request $request)
+	{
+		$id = $request->invoice_id;
+		$invoice = invoices::where('id',$id)->first();
+		$invoice ->delete();
+		return back()->with('archive_invoice','');
+	}
+	public function invoice_restore(Request $request)
+	{
+		$id = $request->invoice_id;
+		$invoice = invoices::withTrashed()->where('id',$id)->restore();
+		return redirect(route('invoices.index'))->with('restored_invoice','');
 	}
 	
 	
+	
+	public function print_invoice($id)
+	{
+		$invoices = invoices::with('section')->where('id',$id)->first();
+		return view('invoices.print_invoice',compact('invoices'));
+	}
 }
