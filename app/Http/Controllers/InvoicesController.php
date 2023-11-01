@@ -6,12 +6,16 @@ use App\Models\invoices;
 use App\Models\invoice_attachments;
 use App\Models\invoices_details;
 use App\Models\sections;
+use App\Models\User;
+use App\Notifications\Add_invoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use function PHPUnit\Framework\isEmpty;
+use Illuminate\Support\Facades\Notification;
+
 
 class InvoicesController extends Controller
 {
@@ -65,8 +69,11 @@ class InvoicesController extends Controller
 		    'note' => $request->note,
 		    'user' => (Auth::user()->name),
 	    ]);
-
-
+		
+	    
+	    
+	    
+	    
 	    if ($request->hasFile('pic')) {
 		    $request->validate([
 			    'pic' => 'required|image|mimes:pdf,jpg,png|max:2048', // Example validation rules
@@ -91,16 +98,14 @@ class InvoicesController extends Controller
 	    }
 
 	    
-	    // $user = User::first();
-	    // Notification::send($user, new AddInvoice($invoice_id));
-//
-//	    $user = User::get();
-//	    $invoices = invoices::latest()->first();
-//	    Notification::send($user, new \App\Notifications\Add_invoice_new($invoices));
-//
-//
 //	    event(new MyEventClass('hello world'));
-//
+	    
+	    $user = User::get();
+	    $invoices = invoices::latest()->first();
+	    Notification::send($user, new Add_invoice($invoices->id));
+	    
+	    
+	    
 	    session()->flash('success', 'تم اضافة الفاتورة بنجاح');
 	    return back();
 	    

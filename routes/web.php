@@ -75,7 +75,7 @@ Route::group([
 		Route::get('/section/{id}', 'getproducts')->name('get-products');
 		Route::post('/restore', 'invoice_restore')->name('restore');
 		
-		Route::get('/print/{id}', 'print_invoice')->name('print.invoice');
+		Route::get('/print/php{id}', 'print_invoice')->name('print.invoice');
 		
 		//status
 		Route::get('/status_show/{id}', 'show')->name('status.show');
