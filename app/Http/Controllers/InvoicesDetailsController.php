@@ -97,7 +97,7 @@ class InvoicesDetailsController extends Controller
 	
 	{
 			$request->validate([
-				'file_name' => 'required|image|mimes:pdf,jpg,png|max:2048', // Example validation rules
+				'file_name' => 'required|mimes:pdf,jpg,png|max:2048', // Example validation rules
 			],[
 				'file_name.mimes'=>' تم حفظ الفاتورة ولكن الصورة غير متوافقة '
 			]);

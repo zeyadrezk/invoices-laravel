@@ -76,6 +76,7 @@ Route::group([
 		Route::post('/restore', 'invoice_restore')->name('restore');
 		
 		Route::get('/print/php{id}', 'print_invoice')->name('print.invoice');
+		Route::get('/excel_export', 'export')->name('excel.export');
 		
 		//status
 		Route::get('/status_show/{id}', 'show')->name('status.show');

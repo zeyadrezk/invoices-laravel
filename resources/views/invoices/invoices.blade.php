@@ -79,8 +79,13 @@
 						<div class="col-xl-12">
 							<div class="card">
 								<div class="card-header pb-0">
-										<a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
+
+									<a href="invoices/create" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
 													class="fas fa-plus"></i>&nbsp; اضافة فاتورة</a>
+
+
+									<a href="invoices/excel_export" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
+												class="fas fa-download	"></i>&nbsp; تصدير اكسيل</a>
 
 								</div>
 								<div class="card-body">

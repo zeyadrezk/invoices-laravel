@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InvoicesExport;
 use App\Models\invoices;
 use App\Models\invoice_attachments;
 use App\Models\invoices_details;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Support\Facades\Notification;
 
@@ -76,7 +78,7 @@ class InvoicesController extends Controller
 	    
 	    if ($request->hasFile('pic')) {
 		    $request->validate([
-			    'pic' => 'required|image|mimes:pdf,jpg,png|max:2048', // Example validation rules
+			    'pic' => 'required|mimes:pdf,jpg,png|max:2048', // Example validation rules
 		    ],[
 				'pic.mimes'=>'تم حفظ الفاتورة ولكن الصورة غير متوافقة '
 		    ]);
@@ -328,4 +330,15 @@ class InvoicesController extends Controller
 		$invoices = invoices::with('section')->where('id',$id)->first();
 		return view('invoices.print_invoice',compact('invoices'));
 	}
+	
+	public function export()
+	{
+		  $file =  Excel::download(new InvoicesExport, 'invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+
+		ob_end_clean();
+		
+		
+		return $file;
+	}
+	
 }
