@@ -24,6 +24,25 @@ class InvoicesController extends Controller
     /**
      * Display a listing of the resource.
      */
+	
+	function __construct()
+	{
+		
+		$this->middleware('permission:قائمة الفواتير', ['only' => ['index']]);
+		$this->middleware('permission:اضافة فاتورة', ['only' => ['create','store']]);
+		$this->middleware('permission:تعديل الفاتورة', ['only' => ['edit','update']]);
+		$this->middleware('permission:حذف الفاتورة', ['only' => ['destroy']]);
+		$this->middleware('permission:ارشفة الفاتورة', ['only' => ['invoice_archive']]);
+		$this->middleware('permission:الفواتير المدفوعة', ['only' => ['invoice_paid']]);
+		$this->middleware('permission:الفواتير الغير مدفوعة', ['only' => ['invoice_unpaid']]);
+		$this->middleware('permission:الفواتير المدفوعة جزئيا', ['only' => ['invoice_partial']]);
+		$this->middleware('permission:ارشيف الفواتير', ['only' => ['archived_invoices']]);
+		$this->middleware('permission:استعادة الفاتورة', ['only' => ['invoice_restore']]);
+		$this->middleware('permission: طباعةالفاتورة', ['only' => ['print_invoice']]);
+		$this->middleware('permission:تغير حالة الدفع', ['only' => ['status_update','show']]);
+		
+	}
+	
     public function index()
     {
 	    $invoices = invoices::with('section')->get();
@@ -303,12 +322,14 @@ class InvoicesController extends Controller
 		$invoices = invoices::with('section')->where('Value_status',3)->get();
 		return view('invoices.invoices_partial',compact('invoices'));
 		
-	}	public function archived_invoices()
+	}
+	public function archived_invoices()
 	{
 		$invoices = invoices::with('section')->onlyTrashed()->get();
 		return view('invoices.archived_invoices',compact('invoices'));
 		
 	}
+	
 	public function invoice_archive(Request $request)
 	{
 		$id = $request->invoice_id;

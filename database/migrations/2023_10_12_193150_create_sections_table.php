@@ -13,9 +13,9 @@ return new class extends Migration
     {
 	    Schema::create('sections', function (Blueprint $table) {
 		    $table->bigIncrements('id');
-		    $table->string('section_name', 999)->unique();
+		    $table->string('section_name')->unique();
 		    $table->text('description')->nullable();
-		    $table->string('Created_by', 999);
+		    $table->string('Created_by');
 		    $table->timestamps();
 	    });
     }

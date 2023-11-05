@@ -12,7 +12,24 @@ use Illuminate\Support\Facades\Storage;
 
 class InvoicesDetailsController extends Controller
 {
-    /**
+	function __construct()
+	{
+		
+		$this->middleware('permission:حذف المرفق', ['only' => ['destroy']]);
+		$this->middleware('permission:اضافة مرفق', ['only' => ['store_attachment']]);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
      * Display a listing of the resource.
      */
     public function index()

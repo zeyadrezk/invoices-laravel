@@ -5,7 +5,9 @@ use App\Http\Controllers\InvoicesController;
 	use App\Http\Controllers\ProductsController;
 	use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+	use App\Http\Controllers\RoleController;
 	use App\Http\Controllers\SectionsController;
+	use App\Http\Controllers\UserController;
 	use Illuminate\Support\Facades\Route;
 
 /*
@@ -107,6 +109,26 @@ Route::group([
 		Route::get('/download/{invoice_number}/{file_name}', 'get_file')->name('get.file');
 		Route::delete('/delete', 'destroy')->name('file.destroy');
 		Route::post('/Attachments', 'store_attachment')->name('store.attachments');
+		
+	});
+	
+	
+	Route::group(['middleware' => ['auth']], function() {
+		
+		Route::get('roles',[RoleController::class,'index'])->name('roles.index');
+		Route::get('roles/create',[RoleController::class,'create'])->name('roles.create');
+		Route::post('roles/store',[RoleController::class,'store'])->name('roles.store');
+		Route::get('roles/edit/{id}',[RoleController::class,'edit'])->name('roles.edit');
+		Route::patch('roles/update/{id}',[RoleController::class,'update'])->name('roles.update');
+		Route::delete('roles/destroy/{id}',[RoleController::class,'destroy'])->name('roles.destroy');
+		Route::get('roles/show/{id}',[RoleController::class,'show'])->name('roles.show');
+		
+		Route::get('users',[UserController::class,'index'])->name('users.index');
+		Route::get('users/create',[UserController::class,'create'])->name('users.create');
+		Route::post('users/store',[UserController::class,'store'])->name('users.store');
+		Route::get('users/edit/{id}',[UserController::class,'edit'])->name('users.edit');
+		Route::patch('users/update/{id}',[UserController::class,'update'])->name('users.update');
+		Route::delete('users/destroy',[UserController::class,'destroy'])->name('users.destroy');
 		
 	});
 	

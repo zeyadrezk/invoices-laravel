@@ -22,7 +22,7 @@ return new class extends Migration
 		    $table->decimal('Amount_Commission',8,2);
 		    $table->decimal('Discount',8,2);
 		    $table->decimal('Value_VAT',8,2);
-		    $table->string('Rate_VAT', 999);
+		    $table->string('Rate_VAT');
 		    $table->decimal('Total',8,2);
 		    $table->string('Status', 50);
 		    $table->integer('Value_Status');

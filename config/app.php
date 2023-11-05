@@ -170,6 +170,10 @@ return [
         App\Providers\RouteServiceProvider::class,
 	    Barryvdh\Debugbar\ServiceProvider::class,
 	    Maatwebsite\Excel\ExcelServiceProvider::class,
+	    Spatie\Permission\PermissionServiceProvider::class,
+	    Collective\Html\HtmlServiceProvider::class,
+	    Collective\Html\HtmlServiceProvider::class,
+    
     
     ])->toArray(),
 
@@ -187,6 +191,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
 	    'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
 	    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+	    'Form' => Collective\Html\FormFacade::class,
+	    'Html' => Collective\Html\HtmlFacade::class,
 	    
 	    // 'Example' => App\Facades\Example::class,
     ])->toArray(),

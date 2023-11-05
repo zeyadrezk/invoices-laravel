@@ -3,9 +3,9 @@
     <!--- Internal Select2 css-->
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
     <!---Internal Fileupload css-->
-    <link href="{{ URL::asset('assets/plugins/fileuploads/css/fileupload.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('assets/plugins/fileuploads/css/fileupload.css') }}" rel="stylesheet" type="text/css"/>
     <!---Internal Fancy uploader css-->
-    <link href="{{ URL::asset('assets/plugins/fancyuploder/fancy_fileupload.css') }}" rel="stylesheet" />
+    <link href="{{ URL::asset('assets/plugins/fancyuploder/fancy_fileupload.css') }}" rel="stylesheet"/>
     <!--Internal Sumoselect css-->
     <link rel="stylesheet" href="{{ URL::asset('assets/plugins/sumoselect/sumoselect-rtl.css') }}">
     <!--Internal  TelephoneInput css-->
@@ -32,10 +32,9 @@
 @endsection
 @section('content')
 
-
     @if (session()->has('error'))
         <script>
-            window.onload = function() {
+            window.onload = function () {
                 notif({
                     msg: "يجب اختيار حالة الدفع ",
                     type: "error"
@@ -60,7 +59,7 @@
                             <div class="col">
                                 <label for="inputName" class="control-label">رقم الفاتورة</label>
                                 <input type="text" class="form-control" id="inputName" name="invoice_number"
-                                       title="يرجي ادخال رقم الفاتورة"  value="{{$invoice->invoice_number}}" readonly>
+                                       title="يرجي ادخال رقم الفاتورة" value="{{$invoice->invoice_number}}" readonly>
                             </div>
 
                             <div class="col">
@@ -72,7 +71,7 @@
                             <div class="col">
                                 <label>تاريخ الاستحقاق</label>
                                 <input class="form-control fc-datepicker" name="Due_date" placeholder="YYYY-MM-DD"
-                                       type="text"  value="{{ $invoice->Due_date }}" readonly>
+                                       type="text" value="{{ $invoice->Due_date }}" readonly>
                             </div>
 
                         </div>
@@ -81,9 +80,10 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="control-label">القسم</label>
-                                <select name="section_id" class="form-control " readonly >
+                                <select name="section_id" class="form-control " readonly>
                                     <!--placeholder-->
-                                    <option value="{{$invoice->section_id}}" readonly>{{ $invoice->section->section_name }}</option>
+                                    <option value="{{$invoice->section_id}}"
+                                            readonly>{{ $invoice->section->section_name }}</option>
 
                                 </select>
                             </div>
@@ -91,7 +91,7 @@
                             <div class="col">
                                 <label for="inputName" class="control-label">المنتج</label>
                                 <select id="product" name="product" class="form-control" value="" readonly>
-                                    <option value="{{$invoice->product}}" >{{ $invoice->product }}</option>
+                                    <option value="{{$invoice->product}}">{{ $invoice->product }}</option>
 
 
                                 </select>
@@ -99,7 +99,8 @@
 
                             <div class="col">
                                 <label for="inputName" class="control-label">مبلغ التحصيل</label>
-                                <input type="text" class="form-control" id="inputName" name="Amount_collection" value="{{ $invoice->Amount_collection}}" readonly>
+                                <input type="text" class="form-control" id="inputName" name="Amount_collection"
+                                       value="{{ $invoice->Amount_collection}}" readonly>
                             </div>
                         </div>
 
@@ -111,7 +112,8 @@
                             <div class="col">
                                 <label for="inputName" class="control-label">مبلغ العمولة</label>
                                 <input type="text" class="form-control form-control-lg" id="Amount_Commission"
-                                       name="Amount_Commission" title="يرجي ادخال مبلغ العمولة " value="{{ $invoice->Amount_Commission}}" readonly>
+                                       name="Amount_Commission" title="يرجي ادخال مبلغ العمولة "
+                                       value="{{ $invoice->Amount_Commission}}" readonly>
                             </div>
 
                             <div class="col">
@@ -122,7 +124,7 @@
 
                             <div class="col">
                                 <label for="inputName" class="control-label">نسبة ضريبة القيمة المضافة</label>
-                                <select name="Rate_VAT" id="Rate_VAT" class="form-control" readonly="" >
+                                <select name="Rate_VAT" id="Rate_VAT" class="form-control" readonly="">
                                     <!--placeholder-->
                                     <option value="{{ $invoice->Rate_VAT}}" readonly>{{ $invoice->Rate_VAT}} </option>
 
@@ -136,12 +138,14 @@
                         <div class="row">
                             <div class="col">
                                 <label for="inputName" class="control-label">قيمة ضريبة القيمة المضافة</label>
-                                <input type="text" class="form-control" id="Value_VAT" name="Value_VAT" value="{{ $invoice->Value_VAT}}" readonly>
+                                <input type="text" class="form-control" id="Value_VAT" name="Value_VAT"
+                                       value="{{ $invoice->Value_VAT}}" readonly>
                             </div>
 
                             <div class="col">
                                 <label for="inputName" class="control-label">الاجمالي شامل الضريبة</label>
-                                <input type="text" class="form-control" id="Total" name="Total" value="{{ $invoice->Total}}" readonly>
+                                <input type="text" class="form-control" id="Total" name="Total"
+                                       value="{{ $invoice->Total}}" readonly>
                             </div>
                         </div>
 
@@ -149,27 +153,29 @@
                         <div class="row">
                             <div class="col">
                                 <label for="exampleTextarea">ملاحظات</label>
-                                <textarea class="form-control" id="exampleTextarea" name="note" rows="3" value="{{ $invoice->note}}" readonly></textarea>
+                                <textarea class="form-control" id="exampleTextarea" name="note" rows="3"
+                                          value="{{ $invoice->note}}" readonly></textarea>
                             </div>
-                        </div><br>
-                        <div    class="row">
-                        <div class="col">
-                            <label for="inputName" class="control-label">حالة الدفع</label>
-                            <select name="status" class="form-control " required >
-                                <!--placeholder-->
-                                <option selected="false" disabled="disabled">-- حدد حالة الدفع --</option>
-                                <option value="مدفوعة">مدفوعة</option>
-                                <option value="مدفوعة جزئيا">مدفوعة جزئيا</option>
-
-                            </select>
                         </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <label for="inputName" class="control-label">حالة الدفع</label>
+                                <select name="status" class="form-control " required>
+                                    <!--placeholder-->
+                                    <option selected="false" disabled="disabled">-- حدد حالة الدفع --</option>
+                                    <option value="مدفوعة">مدفوعة</option>
+                                    <option value="مدفوعة جزئيا">مدفوعة جزئيا</option>
 
-                        <div class="col">
-                            <label>تاريخ الدفع</label>
-                            <input class="form-control fc-datepicker" name="payment_date" placeholder="YYYY-MM-DD"
-                                   type="text" value="{{ date('Y-m-d') }}" required>
-                            <input type="hidden" name="invoice_id" value="{{$invoice->id}}">
-                        </div>
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <label>تاريخ الدفع</label>
+                                <input class="form-control fc-datepicker" name="payment_date" placeholder="YYYY-MM-DD"
+                                       type="text" value="{{ date('Y-m-d') }}" required>
+                                <input type="hidden" name="invoice_id" value="{{$invoice->id}}">
+                            </div>
                         </div>
                         <br>
                         <div class="d-flex justify-content-center">
@@ -219,11 +225,5 @@
     <!--Internal  Notify js -->
     <script src="{{URL::asset('assets/plugins/notify/js/notifIt.js')}}"></script>
     <script src="{{URL::asset('assets/plugins/notify/js/notifit-custom.js')}}"></script>
-
-
-
-
-
-
 
 @endsection

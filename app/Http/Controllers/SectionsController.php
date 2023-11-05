@@ -10,7 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class SectionsController extends Controller
 {
-    /**
+	
+	
+	function __construct()
+	{
+		
+		$this->middleware('permission:الاقسام', ['only' => ['index']]);
+		$this->middleware('permission:اضافة قسم', ['only' => ['create','store']]);
+		$this->middleware('permission:تعديل قسم', ['only' => ['edit','update']]);
+		$this->middleware('permission:حذف قسم', ['only' => ['destroy']]);
+		
+	}
+	
+	
+	/**
      * Display a listing of the resource.
      */
     public function index()
