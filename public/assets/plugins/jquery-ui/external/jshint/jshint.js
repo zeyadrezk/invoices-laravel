@@ -52822,7 +52822,7 @@ var JSHINT = (function () {
       dojo        : true, // if Dojo Toolkit globals should be predefined
       eqeqeq      : true, // if === should be required
       eqnull      : true, // if == null comparisons should be tolerated
-      notypeof    : true, // if should report typos in typeof comparisons
+      notypeof    : true, // if should reports typos in typeof comparisons
       es3         : true, // if ES3 syntax should be allowed
       es5         : true, // if ES5 syntax should be allowed (is now set per default)
       esnext      : true, // if es.next specific syntax should be allowed

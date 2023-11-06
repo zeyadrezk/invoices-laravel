@@ -157,7 +157,7 @@
                     if (this.options.separateDialCode) {
                         this.options.autoHideDialCode = this.options.nationalMode = false;
                     }
-                    // we cannot just test screen size as some smartphones/website meta tags will report desktop
+                    // we cannot just test screen size as some smartphones/website meta tags will reports desktop
                     // resolutions
                     // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
                     // rest of these declarations

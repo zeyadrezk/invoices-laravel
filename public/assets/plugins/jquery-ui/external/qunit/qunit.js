@@ -2177,7 +2177,7 @@ QUnit.diff = (function() {
     };
 
     /**
-     * Convert a diff array into a pretty HTML report.
+     * Convert a diff array into a pretty HTML reports.
      * @param {!Array.<!DiffMatchPatch.Diff>} diffs Array of diff tuples.
      * @param {integer} string to be beautified.
      * @return {string} HTML representation.
