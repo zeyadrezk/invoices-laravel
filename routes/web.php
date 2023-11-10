@@ -1,5 +1,6 @@
 <?php
 	
+	use App\Http\Controllers\CustomersReportController;
 	use App\Http\Controllers\InvoicesController;
 	use App\Http\Controllers\InvoicesDetailsController;
 	use App\Http\Controllers\InvoicesReportController;
@@ -143,6 +144,16 @@
 	], function () {
 		Route::get('/', 'index')->name('index');
 		Route::post('/search', 'search_invoice')->name('search');
+	});
+	
+	Route::group([
+		'middleware' => ['auth'],
+		'controller' => CustomersReportController::class,
+		'prefix' => 'customer_reports',
+		'as' => 'customer.reports.'
+	], function () {
+		Route::get('/', 'index')->name('index');
+		Route::post('/search', 'search_customers')->name('search');
 		
 	});
 

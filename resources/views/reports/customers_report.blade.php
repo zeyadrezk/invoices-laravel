@@ -15,7 +15,7 @@
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
 
     @section('title')
-        تقرير الفواتير
+        تقرير العملاء - مورا سوفت للادارة الفواتير
     @stop
 @endsection
 @section('page-header')
@@ -24,7 +24,7 @@
         <div class="my-auto">
             <div class="d-flex">
                 <h4 class="content-title mb-0 my-auto">التقارير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ تقرير
-                الفواتير</span>
+                العملاء</span>
             </div>
         </div>
     </div>
@@ -55,45 +55,30 @@
 
                 <div class="card-header pb-0">
 
-                    <form action="{{route('invoices.reports.search')}}" method="POST" role="search" autocomplete="off">
+                    <form action="{{route('customer.reports.search')}}" method="POST" role="search" autocomplete="off">
                         @csrf
 
 
-                        <div class="col-lg-3">
-                            <label class="rdiobox">
-                                <input checked name="rdio" type="radio" value="1" id="type_div"> <span>بحث بنوع
-                                الفاتورة</span></label>
-                        </div>
-
-
-                        <div class="col-lg-3 mg-t-20 mg-lg-t-0">
-                            <label class="rdiobox"><input name="rdio" value="2" type="radio"><span>بحث برقم الفاتورة
-                            </span></label>
-                        </div>
-                        <br><br>
-
                         <div class="row">
 
-                            <div class="col-lg-3 mg-t-20 mg-lg-t-0" id="type">
-                                <p class="mg-b-10">تحديد نوع الفواتير</p>
-                                <select class="form-control select2" name="type" required>
-                                    <option value="{{ $type ?? 'حدد نوع الفواتير' }}" selected>
-                                        {{ $type ?? 'حدد نوع الفواتير' }}
-                                    </option>
-                                    <option value="الكل">الكل</option>
-                                    <option value="مدفوعة">الفواتير المدفوعة</option>
-                                    <option value="غير مدفوعة">الفواتير الغير مدفوعة</option>
-                                    <option value="مدفوعة جزئيا">الفواتير المدفوعة جزئيا</option>
-
+                            <div class="col">
+                                <label for="inputName" class="control-label">القسم</label>
+                                <select name="Section" class="form-control select2" onclick="console.log($(this).val())"
+                                        onchange="console.log('change is firing')">
+                                    <!--placeholder-->
+                                    <option value="" selected disabled>حدد القسم</option>
+                                    @foreach ($sections as $section)
+                                        <option value="{{ $section->id }}"> {{ $section->section_name }}</option>
+                                    @endforeach
                                 </select>
-                            </div><!-- col-4 -->
+                            </div>
 
+                            <div class="col-lg-3 mg-t-20 mg-lg-t-0">
+                                <label for="inputName" class="control-label">المنتج</label>
+                                <select id="product" name="product" class="form-control select2">
+                                </select>
+                            </div>
 
-                            <div class="col-lg-3 mg-t-20 mg-lg-t-0" id="invoice_number">
-                                <p class="mg-b-10">البحث برقم الفاتورة</p>
-                                <input type="text" class="form-control" id="invoice_number" name="invoice_number">
-
-                            </div><!-- col-4 -->
 
                             <div class="col-lg-3" id="start_at">
                                 <label for="exampleFormControlSelect1">من تاريخ</label>
@@ -153,15 +138,17 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-									<?php $i = 1; ?>
+									<?php $i = 0; ?>
                                 @foreach ($details as $invoice)
+										<?php $i++; ?>
                                     <tr>
-                                        <td>{{ $i++ }}</td>
+                                        <td>{{ $i }}</td>
                                         <td>{{ $invoice->invoice_number }} </td>
                                         <td>{{ $invoice->invoice_Date }}</td>
                                         <td>{{ $invoice->Due_date }}</td>
                                         <td>{{ $invoice->product }}</td>
-                                        <td><a href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
+                                        <td><a
+                                                    href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
                                         </td>
                                         <td>{{ $invoice->Discount }}</td>
                                         <td>{{ $invoice->Rate_VAT }}</td>
@@ -177,6 +164,7 @@
                                             @endif
 
                                         </td>
+
                                         <td>{{ $invoice->note }}</td>
                                     </tr>
                                 @endforeach
@@ -243,22 +231,27 @@
 
     <script>
         $(document).ready(function () {
+            $('select[name="Section"]').on('change', function () {
+                var SectionId = $(this).val();
+                if (SectionId) {
+                    $.ajax({
+                        url: "{{ URL::to('invoices/section') }}/" + SectionId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            $('select[name="product"]').empty();
+                            $.each(data, function (key, value) {
+                                $('select[name="product"]').append('<option value="' +
+                                    value + '">' + value + '</option>');
+                            });
+                        },
+                    });
 
-            $('#invoice_number').hide();
-
-            $('input[type="radio"]').click(function () {
-                if ($(this).attr('id') == 'type_div') {
-                    $('#invoice_number').hide();
-                    $('#type').show();
-                    $('#start_at').show();
-                    $('#end_at').show();
                 } else {
-                    $('#invoice_number').show();
-                    $('#type').hide();
-                    $('#start_at').hide();
-                    $('#end_at').hide();
+                    console.log('AJAX load did not work');
                 }
             });
+
         });
 
     </script>

@@ -4,6 +4,8 @@
 	
 	use App\Models\invoices;
 	use Illuminate\Http\Request;
+	use Illuminate\Support\Facades\DB;
+	use function PHPUnit\Framework\isEmpty;
 	
 	class InvoicesReportController extends Controller
 	{
@@ -37,9 +39,23 @@
 				else {
 					$start_at = date($request->start_at);
 					$end_at = date($request->end_at);
+					if (empty($end_at))
+					{
+						$end_at =  date('Y-m-d');
+					}
+					if (empty($start_at))
+					{
+						
+						$start_at = invoices::orderby('invoice_Date','asc')->first();
+						$start_at = $start_at->invoice_Date ;
+					}
 					$type = $request->type;
-					$invoices = invoices::WhereBetween('invoice_Date', [$start_at, $end_at])->where('Status', '=', $request->type)->get();
+						$type == 'الكل' ?  $invoices = invoices::with('section')->select('*')->wherebetween('invoice_Date', [$start_at, $end_at])->get()  : $invoices = invoices::with('section')->wherebetween('invoice_Date', [$start_at, $end_at])->where('Status', '=', $request->type)->get();
 					
+//					$invoices = DB::table('invoices')->where(('invoice_Date'), [$start_at, $end_at])->where('Status', '=', $request->type)->get();
+//					$invoices = invoices::select('*')->where('invoice_Date', [$start_at, $end_at])->where('Status', '=', $request->type)->get();
+//					$invoices = invoices::whereDate('invoice_Date', '>=',$start_at)->whereDate('invoice_Date', '<=', $end_at)->where('Status', '=', $request->type)->get();
+//					$invoices = invoices::where('Status', '=', $request->type)->get();
 					return view('reports.invoices_report', compact('type', 'start_at', 'end_at'))->withDetails($invoices);
 					
 				}
@@ -59,6 +75,13 @@
 			
 			
 		}
+		
+		public function customers_report()
+		{
+		
+		}
+		
+		
 		
 		
 	}
